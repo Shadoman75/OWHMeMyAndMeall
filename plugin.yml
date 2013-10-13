@@ -1,0 +1,14 @@
+name: MePlugin
+main: info.insomniax.shadoman75.bukkit.MePlugin
+version: 0.0.1
+depend: [Vault]
+commands:
+  me:
+    description: shows whatever you want happening to the player in chat
+    usage: /me [message]
+  my:
+    description: shows whatever you want in a way that it is owned by the player in chat
+    usage: /my [message]
+  meall: 
+    description: forces all players to do /me and your message
+    usage: /meall [message]
