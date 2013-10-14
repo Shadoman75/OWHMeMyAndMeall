@@ -5,19 +5,28 @@ import info.insomniax.shadoman75.bukkit.permissions.PermissionsHandler;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public final class MePlugin extends JavaPlugin {
-	
+
 	public void onDisable(){
 		getLogger().info("Disabled... for now");
+		this.saveConfig();
 	}
 	public void onEnable(){
+		this.saveDefaultConfig();
 		getLogger().info("Enabled... for now");
 		permissions = new PermissionsHandler(this);
+		config = this.getConfig();
+		color = ChatColor.getByChar(config.getString("color"));
+		if(color == null){
+			color = ChatColor.AQUA;
+			getLogger().info("Invalid Color Code, Defaulting to Aqua");
+		}
 		if(permissions.setupPermissions()){
 			getLogger().info("Setting Up Permissions");
 	
@@ -26,8 +35,9 @@ public final class MePlugin extends JavaPlugin {
 			this.getServer().getPluginManager().disablePlugin(this);
 		}
 	}
+	public ChatColor color = null;
 	public PermissionsHandler permissions = null;
-	
+	public FileConfiguration config = null;
 	public String arrayToString(String[] args){
 		if(args.length > 0){
 			// ARGUMENT LOOP START!
@@ -41,7 +51,6 @@ public final class MePlugin extends JavaPlugin {
 		return null;
 		
 	}
-	
 	public boolean onCommand(CommandSender sender, Command cmd,
 		String commandLabel, String[] args) {
 		String message = arrayToString(args);
@@ -52,7 +61,7 @@ public final class MePlugin extends JavaPlugin {
 					// PLAYER LOOPZ!
 					for(Player p:((Player)sender).getWorld().getPlayers()){
 						// and the message will be sent here :o
-						p.sendMessage(ChatColor.AQUA + "~" + " " + sender.getName() + message);
+						p.sendMessage(color + "~" + " " + sender.getName() + message);
 						return true;
 					}
 					
